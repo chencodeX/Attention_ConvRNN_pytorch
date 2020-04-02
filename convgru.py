@@ -13,6 +13,8 @@ from torch import nn
 import torch.nn.functional as f
 from torch.autograd import Variable
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 class ConvGRUCell(nn.Module):
 
@@ -35,9 +37,9 @@ class ConvGRUCell(nn.Module):
             # print (list(input.data.size()[2:]))
             size_h = [input.data.size()[0], self.hidden_size] + list(input.data.size()[2:])
             # print size_h
-            hidden = Variable(torch.zeros(size_h).cuda())
+            hidden = torch.zeros(size_h, device=device)
 
-        print (input.size())
+        print (input.size(), input.dtype())
         print (hidden.size())
         c1 = self.ConvGates(torch.cat((input, hidden), 1))
 
@@ -110,7 +112,7 @@ class ConvGRU(nn.Module):
             cell = self.cells[layers_index]
 
             cell_hidden = hidden[layers_index]
-            update_hidden = cell(input,cell_hidden)
+            update_hidden = cell(input, cell_hidden)
             update_hiddens.append(update_hidden)
 
             input = update_hidden
