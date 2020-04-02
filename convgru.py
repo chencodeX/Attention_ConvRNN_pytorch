@@ -61,7 +61,7 @@ class ConvGRUCell(nn.Module):
 
 class ConvGRU(nn.Module):
     def __init__(self, input_size, hidden_size, kernel_size, layers_num):
-        super(ConvGRUCell, self).__init__()
+        super(ConvGRU, self).__init__()
 
         self.input_size = input_size
 
