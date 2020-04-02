@@ -51,7 +51,7 @@ class ConvGRUCell(nn.Module):
         # reset_gate = self.dropout(f.sigmoid(rt))
         # update_gate = self.dropout(f.sigmoid(ut))
         gated_hidden = reset_gate * hidden
-        ct = f.tanh(self.Conv_ct(torch.cat((input, gated_hidden), 1)))
+        ct = torch.tanh(self.Conv_ct(torch.cat((input, gated_hidden), 1)))
         # ct = f.tanh()
         # next_h = update_gate * ct + (1 - update_gate) * hidden   # 展开算式
         #
