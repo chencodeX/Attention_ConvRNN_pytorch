@@ -39,8 +39,8 @@ class ConvGRUCell(nn.Module):
             # print size_h
             hidden = torch.zeros(size_h, device=device)
 
-        print (input.size(), input.dtype())
-        print (hidden.size())
+        print (input.size(), input.dtype)
+        print (hidden.size(),hidden.dtype)
         c1 = self.ConvGates(torch.cat((input, hidden), 1))
 
         ru = self.dropout(f.sigmoid(c1))
