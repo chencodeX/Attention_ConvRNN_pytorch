@@ -11,7 +11,6 @@ import time
 import torch
 from torch import nn
 
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 work_time = 0
@@ -40,9 +39,9 @@ class ConvGRUCell(nn.Module):
             # print size_h
             hidden = torch.zeros(size_h, device=device)
 
-        print (input.size(), input.dtype)
-        print (hidden.size(), hidden.dtype)
-        print ('=' * 20)
+        # print (input.size(), input.dtype)
+        # print (hidden.size(), hidden.dtype)
+        # print ('=' * 20)
         c1 = self.ConvGates(torch.cat((input, hidden), 1))
 
         ru = self.dropout(torch.sigmoid(c1))
@@ -55,7 +54,7 @@ class ConvGRUCell(nn.Module):
         ct = torch.tanh(self.Conv_ct(torch.cat((input, gated_hidden), 1)))
         # ct = f.tanh()
 
-        next_h = update_gate * ct + (1 - update_gate) * hidden   # 展开算式
+        next_h = update_gate * ct + (1 - update_gate) * hidden  # 展开算式
         #
         # next_h = update_gate * ct + hidden - update_gate * hidden
 
