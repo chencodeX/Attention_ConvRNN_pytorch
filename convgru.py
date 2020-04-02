@@ -44,7 +44,7 @@ class ConvGRUCell(nn.Module):
         print ('='*20)
         c1 = self.ConvGates(torch.cat((input, hidden), 1))
 
-        ru = self.dropout(f.sigmoid(c1))
+        ru = self.dropout(torch.sigmoid(c1))
 
         (reset_gate, update_gate) = ru.chunk(2, 1)
 
