@@ -58,11 +58,11 @@ class ConvGRUCell(nn.Module):
         # ct = f.tanh()
         st = time.time()
 
-        # next_h = update_gate * ct + (1 - update_gate) * hidden   # 展开算式
+        next_h = update_gate * ct + (1 - update_gate) * hidden   # 展开算式
         #
         # next_h = update_gate * ct + hidden - update_gate * hidden
 
-        next_h = update_gate * (ct - hidden) + hidden  # 节省一次乘法
+        # next_h = update_gate * (ct - hidden) + hidden  # 节省一次乘法
 
         et = time.time()
         work_time += (et - st)
