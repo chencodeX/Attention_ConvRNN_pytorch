@@ -41,6 +41,7 @@ class ConvGRUCell(nn.Module):
 
         print (input.size(), input.dtype)
         print (hidden.size(),hidden.dtype)
+        print ('='*20)
         c1 = self.ConvGates(torch.cat((input, hidden), 1))
 
         ru = self.dropout(f.sigmoid(c1))
