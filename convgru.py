@@ -37,8 +37,8 @@ class ConvGRUCell(nn.Module):
             # print size_h
             hidden = Variable(torch.zeros(size_h).cuda())
 
-        # print input.size()
-        # print hidden.size()
+        print (input.size())
+        print (hidden.size())
         c1 = self.ConvGates(torch.cat((input, hidden), 1))
 
         ru = self.dropout(f.sigmoid(c1))
@@ -94,7 +94,7 @@ class ConvGRU(nn.Module):
 
         self.cells = cells
 
-    def forward(self, input, hidden):
+    def forward(self, input, hidden=None):
         """
         :param input: 4D (batch, channels, height, width)
         :param hidden: list of 4D (batch, channels, height, width)
