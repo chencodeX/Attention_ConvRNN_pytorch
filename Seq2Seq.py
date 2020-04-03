@@ -10,6 +10,7 @@ descirption: https://pytorch.org/tutorials/intermediate/seq2seq_translation_tuto
 import torch
 from torch import nn
 from convgru import ConvGRU
+import torch.nn.functional as F
 
 
 def deconv2_act(inplanes, out_channels=8, kernel_size=7, stride=5, padding=1, bias=True):
@@ -56,14 +57,54 @@ class DecoderRNN(nn.Module):
         super(DecoderRNN, self).__init__()
 
         self.relu = nn.ReLU()
-        self.gru = nn.GRU(output_size, hidden_size, kernel_size, layers_num)
+        self.gru = ConvGRU(output_size, hidden_size, kernel_size, layers_num)
         self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=output_size, kernel_size=3, stride=1,
                                   padding=1, bias=True)
 
     def forward(self, input, hidden):
-        hidden = self.gru(input, hidden)
-        output = self.relu(self.conv_pre(hidden[-1]))
-        return output, hidden
+        hiddens = self.gru(input, hidden)
+        output = self.relu(self.conv_pre(hiddens[-1]))
+        return output, hiddens
 
     # def initHidden(self):
     #     return torch.zeros(1, 1, self.hidden_size, device=device)
+
+
+class AttnDecoderRNN(nn.Module):
+    def __init__(self, hidden_size, output_size, kernel_size, layers_num, dropout_p=0.1):
+        super(AttnDecoderRNN, self).__init__()
+        self.hidden_size = hidden_size
+        self.output_size = output_size
+        self.dropout_p = dropout_p
+
+        self.attn = nn.Conv2d(self.input_size + self.hidden_size, 2 * self.hidden_size, self.kernel_size,
+                              padding=self.kernel_size // 2)
+
+        self.attn_combine = nn.Conv2d(self.input_size + self.hidden_size, 2 * self.hidden_size, self.kernel_size,
+                                      padding=self.kernel_size // 2)
+
+        self.dropout = nn.Dropout(p=self.dropout_p)
+
+        self.relu = nn.ReLU()
+        self.gru = ConvGRU(output_size, hidden_size, kernel_size, layers_num)
+        self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=output_size, kernel_size=3, stride=1,
+                                  padding=1, bias=True)
+
+    def forward(self, input, hiddens, encoder_outputs):
+        input = self.dropout(input.view(1, 1, -1))
+        attn_weights = F.softmax(
+            self.attn(torch.cat((input[0], hiddens[0]), 1)), dim=1
+        )
+
+        # 维度可能还有问题
+        attn_applied = torch.bmm(attn_weights.unsqueeze(0),
+                                 encoder_outputs.unsqueeze(0))
+
+        output = torch.cat((input[0], attn_applied[0]), 1)
+        output = self.attn_combine(output).unsqueeze(0)
+        output = self.relu(output)
+        hiddens = self.gru(output, hiddens)
+        output = self.relu(self.conv_pre(hiddens[-1]))
+        output = self.conv_pre(output)
+
+        return output,hiddens,attn_weights
