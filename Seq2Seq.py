@@ -35,17 +35,35 @@ class EncoderRNN(nn.Module):
     def __init__(self, input_size, hidden_size, kernel_size, layers_num):
         super(EncoderRNN, self).__init__()
         # self.hidden_size = hidden_size
-
+        self.relu = nn.ReLU()
         self.gru = ConvGRU(input_size, hidden_size, kernel_size, layers_num)
         self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=1, kernel_size=3, stride=1, padding=1,
                                   bias=True)
 
     def forward(self, input, hidden=None):
         hiddens = self.gru(input, hidden)
-        # output = hiddens[-1]
         output = self.conv_pre(hiddens[-1])
+        output = self.relu(output)
         return output, hiddens
 
     # init in ConvGRUCell
+    # def initHidden(self):
+    #     return torch.zeros(1, 1, self.hidden_size, device=device)
+
+
+class DecoderRNN(nn.Module):
+    def __init__(self, hidden_size, output_size, kernel_size, layers_num):
+        super(DecoderRNN, self).__init__()
+
+        self.relu = nn.ReLU()
+        self.gru = nn.GRU(output_size, hidden_size, kernel_size, layers_num)
+        self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=output_size, kernel_size=3, stride=1,
+                                  padding=1, bias=True)
+
+    def forward(self, input, hidden):
+        hidden = self.gru(input, hidden)
+        output = self.relu(self.conv_pre(hidden[-1]))
+        return output, hidden
+
     # def initHidden(self):
     #     return torch.zeros(1, 1, self.hidden_size, device=device)
