@@ -92,9 +92,10 @@ class AttnDecoderRNN(nn.Module):
                                   padding=1, bias=True)
 
     def forward(self, input, hiddens, encoder_outputs):
-        input = self.dropout(input.view(1, 1, -1))
+        batch_size = input.size()[0]
+        input = self.dropout(input.view(batch_size, 1, 1, -1))
         attn_weights = F.softmax(
-            self.attn(torch.cat((input[0], hiddens[0]), 1)), dim=1
+            self.attn(torch.cat((input[:,0], hiddens[:,0]), 1)), dim=1
         )
 
         # 维度可能还有问题
