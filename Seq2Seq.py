@@ -77,10 +77,10 @@ class AttnDecoderRNN(nn.Module):
         self.output_size = output_size
         self.dropout_p = dropout_p
 
-        self.attn = nn.Conv2d(self.input_size + self.hidden_size, 2 * self.hidden_size, self.kernel_size,
+        self.attn = nn.Conv2d(self.output_size + self.hidden_size, 2 * self.hidden_size, self.kernel_size,
                               padding=self.kernel_size // 2)
 
-        self.attn_combine = nn.Conv2d(self.input_size + self.hidden_size, 2 * self.hidden_size, self.kernel_size,
+        self.attn_combine = nn.Conv2d(self.output_size + self.hidden_size, 2 * self.hidden_size, self.kernel_size,
                                       padding=self.kernel_size // 2)
 
         self.dropout = nn.Dropout(p=self.dropout_p)
