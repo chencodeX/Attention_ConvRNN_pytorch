@@ -94,7 +94,8 @@ class AttnDecoderRNN(nn.Module):
 
     def forward(self, input, hiddens, encoder_outputs):
         batch_size = input.size()[0]
-        input = self.dropout(input.view(batch_size, 1, 1, -1))
+        # input = self.dropout(input.view(batch_size, 1, 1, -1))
+        input = self.dropout(input)
         print (input.size())
         print (hiddens[0].size())
         attn_weights = F.softmax(
