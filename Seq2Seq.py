@@ -74,6 +74,7 @@ class AttnDecoderRNN(nn.Module):
     def __init__(self, hidden_size, output_size, kernel_size, layers_num, dropout_p=0.1):
         super(AttnDecoderRNN, self).__init__()
         self.hidden_size = hidden_size
+        self.kernel_size = kernel_size
         self.output_size = output_size
         self.dropout_p = dropout_p
 
