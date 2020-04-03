@@ -77,11 +77,12 @@ class AttnDecoderRNN(nn.Module):
         self.output_size = output_size
         self.dropout_p = dropout_p
 
-        self.attn = nn.Conv2d(self.output_size + self.hidden_size, 2 * self.hidden_size, self.kernel_size,
-                              padding=self.kernel_size // 2)
+        self.attn = nn.Conv2d(self.output_size + self.hidden_size[0], 2 * self.hidden_size[0], self.kernel_size[0],
+                              padding=self.kernel_size[0] // 2)
 
-        self.attn_combine = nn.Conv2d(self.output_size + self.hidden_size, 2 * self.hidden_size, self.kernel_size,
-                                      padding=self.kernel_size // 2)
+        self.attn_combine = nn.Conv2d(self.output_size + self.hidden_size[0], 2 * self.hidden_size[0],
+                                      self.kernel_size[0],
+                                      padding=self.kernel_size[0] // 2)
 
         self.dropout = nn.Dropout(p=self.dropout_p)
 
@@ -107,4 +108,4 @@ class AttnDecoderRNN(nn.Module):
         output = self.relu(self.conv_pre(hiddens[-1]))
         output = self.conv_pre(output)
 
-        return output,hiddens,attn_weights
+        return output, hiddens, attn_weights
