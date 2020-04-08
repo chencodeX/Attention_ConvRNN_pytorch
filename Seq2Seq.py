@@ -94,6 +94,7 @@ class AttnDecoderRNN(nn.Module):
 
     def forward(self, input, hiddens, encoder_outputs):
         batch_size = input.size()[0]
+
         # input = self.dropout(input.view(batch_size, 1, 1, -1))
         input = self.dropout(input)
         print (input.size())
@@ -103,11 +104,11 @@ class AttnDecoderRNN(nn.Module):
         )
 
         # 维度可能还有问题
-        attn_applied = torch.bmm(attn_weights.unsqueeze(0),
-                                 encoder_outputs.unsqueeze(0))
+        attn_applied = torch.bmm(attn_weights,
+                                 encoder_outputs)
 
-        output = torch.cat((input[0], attn_applied[0]), 1)
-        output = self.attn_combine(output).unsqueeze(0)
+        output = torch.cat((input, attn_applied), 1)
+        output = self.attn_combine(output)
         output = self.relu(output)
         hiddens = self.gru(output, hiddens)
         output = self.relu(self.conv_pre(hiddens[-1]))
