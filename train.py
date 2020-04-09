@@ -96,7 +96,7 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
         plot_loss_total += loss
 
         if iter % print_every == 0:
-            print_loss_avg = print_loss_total / print_every
+            print_loss_avg = print_loss_total / print_every/batch_size
             print_loss_total = 0
             print('%s (%d %d%%) %.4f' % (timeSince(start, iter / n_iters),
                                          iter, iter / n_iters * 100, print_loss_avg))
