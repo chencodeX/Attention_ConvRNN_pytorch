@@ -81,10 +81,10 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
     plot_loss_total = 0  # Reset every plot_every
     n_iters = n_epoch * len(pairs) // batch_size
     # encoder_optimizer = optim.SGD(encoder.parameters(), lr=learning_rate)
-    encoder_optimizer = torch.optim.Adam(encoder.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+    encoder_optimizer = torch.optim.Adam(encoder.parameters(), lr=0.003, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 
     # decoder_optimizer = optim.SGD(decoder.parameters(), lr=learning_rate)
-    decoder_optimizer = torch.optim.Adam(decoder.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+    decoder_optimizer = torch.optim.Adam(decoder.parameters(), lr=0.003, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 
     # training_pairs = [tensorsFromPair(random.choice(pairs))
     #                   for i in range(n_iters)]
