@@ -35,7 +35,9 @@ def conv2_act(inplanes, out_channels=8, kernel_size=7, stride=5, padding=1, bias
 class EncoderRNN(nn.Module):
     def __init__(self, input_size, hidden_size, kernel_size, layers_num):
         super(EncoderRNN, self).__init__()
-        # self.hidden_size = hidden_size
+        self.hidden_size = hidden_size
+        self.kernel_size = kernel_size
+        self.input_size = input_size
         self.relu = nn.ReLU()
         self.gru = ConvGRU(input_size, hidden_size, kernel_size, layers_num)
         self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=1, kernel_size=3, stride=1, padding=1,
@@ -55,7 +57,9 @@ class EncoderRNN(nn.Module):
 class DecoderRNN(nn.Module):
     def __init__(self, hidden_size, output_size, kernel_size, layers_num):
         super(DecoderRNN, self).__init__()
-
+        self.hidden_size = hidden_size
+        self.kernel_size = kernel_size
+        self.output_size = output_size
         self.relu = nn.ReLU()
         self.gru = ConvGRU(output_size, hidden_size, kernel_size, layers_num)
         self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=output_size, kernel_size=3, stride=1,

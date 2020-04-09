@@ -7,6 +7,8 @@ Create Date: 2020/4/8
 Modify Date: 2020/4/8
 descirption:
 """
+import math
+import time
 
 
 def pixelshuffle_invert(x, factor_hw):
@@ -25,3 +27,17 @@ def pixelshuffle_invert(x, factor_hw):
     y = y.permute(0, 1, 3, 5, 2, 4)  # B, iC, pH, pW, oH, oW
     y = y.reshape(B, oC, oH, oW)
     return y
+
+
+def asMinutes(s):
+    m = math.floor(s / 60)
+    s -= m * 60
+    return '%dm %ds' % (m, s)
+
+
+def timeSince(since, percent):
+    now = time.time()
+    s = now - since
+    es = s / (percent)
+    rs = es - s
+    return '%s (- %s)' % (asMinutes(s), asMinutes(rs))
