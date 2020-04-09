@@ -114,6 +114,8 @@ class ConvGRU(nn.Module):
             cell = self.cells[layers_index]
 
             cell_hidden = hidden[layers_index]
+            print (input.size())
+            print (cell_hidden.size())
             update_hidden = cell(input, cell_hidden)
             update_hiddens.append(update_hidden)
 
