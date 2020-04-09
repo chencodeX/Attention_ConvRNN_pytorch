@@ -40,12 +40,17 @@ class EncoderRNN(nn.Module):
         self.input_size = input_size
         self.relu = nn.Sigmoid()
         self.gru = ConvGRU(input_size, hidden_size, kernel_size, layers_num)
-        self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=1, kernel_size=3, stride=1, padding=1,
+        self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=8, kernel_size=3, stride=1, padding=1,
                                   bias=True)
+
+        self.conv_pre1 = nn.Conv2d(in_channels=8, out_channels=input_size, kernel_size=1, stride=1,
+                                  padding=0, bias=True)
 
     def forward(self, input, hidden=None):
         hiddens = self.gru(input, hidden)
         output = self.conv_pre(hiddens[-1])
+        output = self.relu(output)
+        output = self.conv_pre1(output)
         output = self.relu(output)
         return output, hiddens
 
@@ -62,12 +67,17 @@ class DecoderRNN(nn.Module):
         self.output_size = output_size
         self.relu = nn.Sigmoid()
         self.gru = ConvGRU(output_size, hidden_size, kernel_size, layers_num)
-        self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=output_size, kernel_size=3, stride=1,
+        self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=8, kernel_size=3, stride=1,
                                   padding=1, bias=True)
+
+        self.conv_pre1 = nn.Conv2d(in_channels=8, out_channels=output_size, kernel_size=1, stride=1,
+                                  padding=0, bias=True)
 
     def forward(self, input, hidden):
         hiddens = self.gru(input, hidden)
         output = self.relu(self.conv_pre(hiddens[-1]))
+
+        output = self.relu(self.conv_pre1(output))
         return output, hiddens
 
     # def initHidden(self):
@@ -93,8 +103,10 @@ class AttnDecoderRNN(nn.Module):
 
         self.relu = nn.ReLU()
         self.gru = ConvGRU(output_size, hidden_size, kernel_size, layers_num)
-        self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=output_size, kernel_size=3, stride=1,
+        self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=8, kernel_size=3, stride=1,
                                   padding=1, bias=True)
+        self.conv_pre1 = nn.Conv2d(in_channels=8, out_channels=output_size, kernel_size=1, stride=1,
+                                  padding=0, bias=True)
 
     def forward(self, input, hiddens, encoder_outputs):
         batch_size = input.size()[0]
