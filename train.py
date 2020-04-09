@@ -8,8 +8,8 @@ Modify Date: 2020/4/9
 descirption:
 """
 import torch
-from torch import nn
-from torch import optim
+import torch.nn as nn
+import torch.optim as optim
 import random
 import numpy as np
 import time
