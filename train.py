@@ -139,4 +139,4 @@ encoder1 = EncoderRNN(input_size=1, hidden_size=[32, 64, 16], kernel_size=[3, 5,
 
 decoder1 = DecoderRNN(output_size=1, hidden_size=[32, 64, 16], kernel_size=[3, 5, 3], layers_num=3).to(device)
 
-trainIters(encoder1, decoder1, n_epoch=15, pairs=train_pairs, print_every=50)
+trainIters(encoder1, decoder1, n_epoch=15, pairs=train_pairs, print_every=10)
