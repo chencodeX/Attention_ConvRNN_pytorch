@@ -36,7 +36,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
 
     for ei in range(input_length):
         encoder_output, encoder_hidden = encoder(
-            input_tensor[ei], encoder_hidden)
+            input_tensor[:,ei], encoder_hidden)
 
     decoder_input = encoder_output
 
