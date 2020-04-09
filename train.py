@@ -37,6 +37,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     for ei in range(input_length):
         encoder_output, encoder_hidden = encoder(
             input_tensor[:, ei], encoder_hidden)
+        loss += criterion(encoder_output, input_tensor[:, ei + 1])
 
     decoder_input = encoder_output
 
@@ -142,8 +143,8 @@ train_pairs = mnist_moving_dataset[:int(data_length * 0.8)]
 
 test_pairs = mnist_moving_dataset[int(data_length * 0.8):]
 
-encoder1 = EncoderRNN(input_size=1, hidden_size=[64, 128, 128], kernel_size=[3, 5, 5], layers_num=3).to(device)
+encoder1 = EncoderRNN(input_size=1, hidden_size=[32, 64, 32], kernel_size=[3, 5, 3], layers_num=3).to(device)
 
-decoder1 = DecoderRNN(output_size=1, hidden_size=[64, 128, 128], kernel_size=[3, 5, 5], layers_num=3).to(device)
+decoder1 = DecoderRNN(output_size=1, hidden_size=[32, 64, 32], kernel_size=[3, 5, 3], layers_num=3).to(device)
 
 trainIters(encoder1, decoder1, n_epoch=15, pairs=train_pairs, print_every=10)
