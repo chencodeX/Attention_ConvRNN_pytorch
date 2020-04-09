@@ -57,7 +57,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
             decoder_output, decoder_hidden = decoder(
                 decoder_input, decoder_hidden)
             # topv, topi = decoder_output.topk(1)
-            # decoder_input = topi.squeeze().detach()  # detach from history as input
+            decoder_input = decoder_output  # detach from history as input
 
             loss += criterion(decoder_output, target_tensor[:, di])
             # if decoder_input.item() == EOS_token:
