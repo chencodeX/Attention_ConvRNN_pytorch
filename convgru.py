@@ -36,7 +36,6 @@ class ConvGRUCell(nn.Module):
             # print (self.hidden_size)
             # print (list(input.data.size()[2:]))
             size_h = [input.data.size()[0], self.hidden_size] + list(input.data.size()[2:])
-            print (size_h)
 
             hidden = torch.zeros(size_h, device=device)
 
