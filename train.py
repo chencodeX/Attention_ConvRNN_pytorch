@@ -116,7 +116,7 @@ mnist_moving_dataset = np.load('/home/meteo/zihao.chen/jupyter/mnist_test_seq.np
 
 mnist_moving_dataset.transpose([1, 0, 2, 3])
 
-mnist_moving_dataset = mnist_moving_dataset[0, 1, np.newaxis, 2, 3]
+mnist_moving_dataset = mnist_moving_dataset[:, :, np.newaxis, :, :]
 
 print (mnist_moving_dataset.shape)
 
