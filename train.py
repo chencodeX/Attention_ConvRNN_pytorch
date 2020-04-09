@@ -71,7 +71,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     return loss.item() / target_length
 
 
-def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=100, learning_rate=0.001):
+def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=100, learning_rate=0.01):
     start = time.time()
     plot_losses = []
     print_loss_total = 0  # Reset every print_every
@@ -96,7 +96,7 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
         plot_loss_total += loss
 
         if iter % print_every == 0:
-            print_loss_avg = print_loss_total / print_every/batch_size
+            print_loss_avg = print_loss_total / print_every
             print_loss_total = 0
             print('%s (%d %d%%) %.4f' % (timeSince(start, iter / n_iters),
                                          iter, iter / n_iters * 100, print_loss_avg))
@@ -114,11 +114,11 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
 # input_channels = 1
 mnist_moving_dataset = np.load('/home/meteo/zihao.chen/jupyter/mnist_test_seq.npy').astype(np.float32)
 
-mnist_moving_dataset /= 255.
+# mnist_moving_dataset /= 255.
 
 # mnist_moving_dataset *= 2.
 #
-# mnist_moving_dataset -= .1
+mnist_moving_dataset -= 128
 
 mnist_moving_dataset = mnist_moving_dataset.transpose([1, 0, 2, 3])
 
