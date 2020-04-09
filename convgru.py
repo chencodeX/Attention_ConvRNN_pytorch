@@ -40,8 +40,8 @@ class ConvGRUCell(nn.Module):
 
             hidden = torch.zeros(size_h, device=device)
 
-        print (input.dtype)
-        print (hidden.dtype)
+        # print (input.dtype)
+        # print (hidden.dtype)
         # print (input.size(), input.dtype)
         # print (hidden.size(), hidden.dtype)
         # print ('=' * 20)
