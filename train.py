@@ -122,7 +122,7 @@ print (mnist_moving_dataset.shape)
 
 data_length = len(mnist_moving_dataset)
 nn_i = range(data_length)
-nn_i = np.random.shuffle(nn_i)
+nn_i = random.shuffle(nn_i)
 mnist_moving_dataset = mnist_moving_dataset[nn_i]
 
 train_pairs = mnist_moving_dataset[:int(data_length * 0.8)]
