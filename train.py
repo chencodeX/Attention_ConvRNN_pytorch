@@ -20,7 +20,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 teacher_forcing_ratio = 0.5
 
-batch_size = 16
+batch_size = 8
 
 
 def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion):
@@ -135,8 +135,8 @@ train_pairs = mnist_moving_dataset[:int(data_length * 0.8)]
 
 test_pairs = mnist_moving_dataset[int(data_length * 0.8):]
 
-encoder1 = EncoderRNN(input_size=1, hidden_size=[32, 64, 16], kernel_size=[3, 5, 3], layers_num=3).to(device)
+encoder1 = EncoderRNN(input_size=1, hidden_size=[64, 128, 128], kernel_size=[3, 5, 5], layers_num=3).to(device)
 
-decoder1 = DecoderRNN(output_size=1, hidden_size=[32, 64, 16], kernel_size=[3, 5, 3], layers_num=3).to(device)
+decoder1 = DecoderRNN(output_size=1, hidden_size=[64, 128, 128], kernel_size=[3, 5, 5], layers_num=3).to(device)
 
 trainIters(encoder1, decoder1, n_epoch=15, pairs=train_pairs, print_every=10)
