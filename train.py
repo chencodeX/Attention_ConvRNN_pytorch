@@ -114,11 +114,11 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
 # input_channels = 1
 mnist_moving_dataset = np.load('/home/meteo/zihao.chen/jupyter/mnist_test_seq.npy').astype(np.float32)
 
-# mnist_moving_dataset /= 255.
+mnist_moving_dataset /= 15
 
 # mnist_moving_dataset *= 2.
 #
-mnist_moving_dataset -= 128
+mnist_moving_dataset -= 8.5
 
 mnist_moving_dataset = mnist_moving_dataset.transpose([1, 0, 2, 3])
 
