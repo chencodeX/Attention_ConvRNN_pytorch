@@ -46,7 +46,7 @@ class EncoderRNN(nn.Module):
     def forward(self, input, hidden=None):
         hiddens = self.gru(input, hidden)
         output = self.conv_pre(hiddens[-1])
-        output = self.relu(output)*8.5
+        output = self.relu(output)
         return output, hiddens
 
     # init in ConvGRUCell
@@ -67,7 +67,7 @@ class DecoderRNN(nn.Module):
 
     def forward(self, input, hidden):
         hiddens = self.gru(input, hidden)
-        output = self.relu(self.conv_pre(hiddens[-1]))*8.5
+        output = self.relu(self.conv_pre(hiddens[-1]))
         return output, hiddens
 
     # def initHidden(self):
