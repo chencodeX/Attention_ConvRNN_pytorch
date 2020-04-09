@@ -112,7 +112,7 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
 # hidden_size = 256
 
 # input_channels = 1
-mnist_moving_dataset = np.load('/home/meteo/zihao.chen/jupyter/mnist_test_seq.npy')
+mnist_moving_dataset = np.load('/home/meteo/zihao.chen/jupyter/mnist_test_seq.npy').astype(np.float)
 
 mnist_moving_dataset /= 255.
 
