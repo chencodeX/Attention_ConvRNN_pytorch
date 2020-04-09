@@ -31,7 +31,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     target_length = target_tensor.size(0)
 
     # encoder_outputs = torch.zeros(max_length, encoder.hidden_size, device=device)
-
+    encoder_hidden = None
     loss = 0
 
     for ei in range(input_length):
