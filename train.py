@@ -113,8 +113,8 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
     # training_pairs = [tensorsFromPair(random.choice(pairs))
     #                   for i in range(n_iters)]
     # criterion = nn.NLLLoss()
-    # criterion = nn.MSELoss()
-    criterion = nn.L1Loss()
+    criterion = nn.MSELoss()
+    # criterion = nn.L1Loss()
 
     for iter in range(1, n_iters + 1):
         training_pair = [random.choice(pairs) for i in range(batch_size)]
