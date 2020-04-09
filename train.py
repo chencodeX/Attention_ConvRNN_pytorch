@@ -141,34 +141,37 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
     # showPlot(plot_losses)
 
 
-# hidden_size = 256
+if __name__ == '__main__':
 
-# input_channels = 1
-mnist_moving_dataset = np.load('/home/meteo/zihao.chen/jupyter/mnist_test_seq.npy').astype(np.float32)
 
-mnist_moving_dataset /= 255.
+    # hidden_size = 256
 
-mnist_moving_dataset *= 2.
-#
-mnist_moving_dataset -= 1
+    # input_channels = 1
+    mnist_moving_dataset = np.load('/home/meteo/zihao.chen/jupyter/mnist_test_seq.npy').astype(np.float32)
 
-mnist_moving_dataset = mnist_moving_dataset.transpose([1, 0, 2, 3])
+    mnist_moving_dataset /= 255.
 
-mnist_moving_dataset = mnist_moving_dataset[:, :, np.newaxis, :, :]
+    mnist_moving_dataset *= 2.
+    #
+    mnist_moving_dataset -= 1
 
-print (mnist_moving_dataset.shape)
+    mnist_moving_dataset = mnist_moving_dataset.transpose([1, 0, 2, 3])
 
-data_length = len(mnist_moving_dataset)
-nn_i = list(range(data_length))
-np.random.shuffle(nn_i)
-mnist_moving_dataset = mnist_moving_dataset[nn_i]
+    mnist_moving_dataset = mnist_moving_dataset[:, :, np.newaxis, :, :]
 
-train_pairs = mnist_moving_dataset[:int(data_length * 0.8)]
+    print (mnist_moving_dataset.shape)
 
-test_pairs = mnist_moving_dataset[int(data_length * 0.8):]
+    data_length = len(mnist_moving_dataset)
+    nn_i = list(range(data_length))
+    np.random.shuffle(nn_i)
+    mnist_moving_dataset = mnist_moving_dataset[nn_i]
 
-encoder1 = EncoderRNN(input_size=1, hidden_size=[32, 64, 32], kernel_size=[3, 5, 3], layers_num=3).to(device)
+    train_pairs = mnist_moving_dataset[:int(data_length * 0.8)]
 
-decoder1 = DecoderRNN(output_size=1, hidden_size=[32, 64, 32], kernel_size=[3, 5, 3], layers_num=3).to(device)
+    test_pairs = mnist_moving_dataset[int(data_length * 0.8):]
 
-trainIters(encoder1, decoder1, n_epoch=15, pairs=train_pairs, print_every=10)
+    encoder1 = EncoderRNN(input_size=1, hidden_size=[32, 64, 32], kernel_size=[3, 5, 3], layers_num=3).to(device)
+
+    decoder1 = DecoderRNN(output_size=1, hidden_size=[32, 64, 32], kernel_size=[3, 5, 3], layers_num=3).to(device)
+
+    trainIters(encoder1, decoder1, n_epoch=15, pairs=train_pairs, print_every=10)
