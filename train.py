@@ -34,11 +34,11 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     encoder_hidden = None
     loss = 0
 
-    for ei in range(input_length):
+    for ei in range(input_length - 1):
         encoder_output, encoder_hidden = encoder(
             input_tensor[:, ei], encoder_hidden)
         loss += criterion(encoder_output, input_tensor[:, ei + 1])
-
+    encoder_output, encoder_hidden = encoder(input_tensor[:, 9], encoder_hidden)
     decoder_input = encoder_output
 
     decoder_hidden = encoder_hidden
@@ -81,10 +81,12 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
     plot_loss_total = 0  # Reset every plot_every
     n_iters = n_epoch * len(pairs) // batch_size
     # encoder_optimizer = optim.SGD(encoder.parameters(), lr=learning_rate)
-    encoder_optimizer = torch.optim.Adam(encoder.parameters(), lr=0.003, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+    encoder_optimizer = torch.optim.Adam(encoder.parameters(), lr=0.003, betas=(0.9, 0.999), eps=1e-08, weight_decay=0,
+                                         amsgrad=False)
 
     # decoder_optimizer = optim.SGD(decoder.parameters(), lr=learning_rate)
-    decoder_optimizer = torch.optim.Adam(decoder.parameters(), lr=0.003, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+    decoder_optimizer = torch.optim.Adam(decoder.parameters(), lr=0.003, betas=(0.9, 0.999), eps=1e-08, weight_decay=0,
+                                         amsgrad=False)
 
     # training_pairs = [tensorsFromPair(random.choice(pairs))
     #                   for i in range(n_iters)]
