@@ -28,7 +28,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     decoder_optimizer.zero_grad()
 
     input_length = input_tensor.size(1)
-    target_length = target_tensor.size(1)
+    target_length = target_tensor.size(1)-1
 
     # encoder_outputs = torch.zeros(max_length, encoder.hidden_size, device=device)
     encoder_hidden = None
@@ -49,7 +49,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
         for di in range(target_length):
             decoder_output, decoder_hidden = decoder(
                 decoder_input, decoder_hidden)
-            loss += criterion(decoder_output, target_tensor[:, di])
+            loss += criterion(decoder_output, target_tensor[:, di+1])
             decoder_input = target_tensor[:, di]  # Teacher forcing
     else:
         # Without teacher forcing: use its own predictions as the next input
@@ -59,7 +59,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
             # topv, topi = decoder_output.topk(1)
             decoder_input = decoder_output  # detach from history as input
 
-            loss += criterion(decoder_output, target_tensor[:, di])
+            loss += criterion(decoder_output, target_tensor[:, di+1])
             # if decoder_input.item() == EOS_token:
             #     break
 
