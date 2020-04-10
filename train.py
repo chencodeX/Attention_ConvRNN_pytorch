@@ -22,6 +22,7 @@ teacher_forcing_ratio = 0.5
 
 batch_size = 32
 
+
 def weights_init(m):
     classname = m.__class__.__name__
     if classname.find('Conv') != -1:
@@ -30,7 +31,6 @@ def weights_init(m):
     elif classname.find('BatchNorm') != -1:
         m.weight.data.normal_(1.0, 0.02)
         m.bias.data.fill_(0)
-
 
 
 def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion):
@@ -94,7 +94,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     return loss.item() / target_length
 
 
-def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=100, learning_rate=0.003):
+def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=100, learning_rate=0.01):
     start = time.time()
     plot_losses = []
     print_loss_total = 0  # Reset every print_every
@@ -128,6 +128,8 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
         plot_loss_total += loss
 
         if iter % print_every == 0:
+            adjust_learning_rate(encoder_optimizer, learning_rate, iter)
+            adjust_learning_rate(decoder_optimizer, learning_rate, iter)
             print_loss_avg = print_loss_total / print_every
             print_loss_total = 0
             print('%s (%d %d%%) %.4f' % (timeSince(start, iter / n_iters),
@@ -141,9 +143,14 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
     # showPlot(plot_losses)
 
 
+def adjust_learning_rate(optimizer, lr, iter):
+    """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
+    lr_ = lr * (0.5 ** (iter // 600))
+    for param_group in optimizer.param_groups:
+        param_group['lr'] = lr_
+
+
 if __name__ == '__main__':
-
-
     # hidden_size = 256
 
     # input_channels = 1
