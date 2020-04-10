@@ -69,8 +69,8 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
                 decoder_input, decoder_hidden)
             loss += criterion(decoder_output, target_tensor[:, di + 1])
             decoder_input = target_tensor[:, di]  # Teacher forcing
-            print (decoder_hidden[-1].mean())
-            print (decoder_output.mean())
+            # print (decoder_hidden[-1].mean())
+            # print (decoder_output.mean())
             # print (decoder_output.sum())
             # print (target_tensor[:, di + 1].mean())
     else:
