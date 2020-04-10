@@ -157,7 +157,7 @@ def evaluate(input_tensor, target_tensor, encoder, decoder, ):
         result.append(encoder_output)
         decoder_hidden = encoder_hidden
 
-        for di in range(target_length - 1):
+        for di in range(target_length):
             decoder_output, decoder_hidden = decoder(
                 decoder_input, decoder_hidden)
             result.append(decoder_output)
