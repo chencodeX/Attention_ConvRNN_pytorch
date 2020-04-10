@@ -150,7 +150,7 @@ def evaluate(input_tensor, target_tensor, encoder, decoder ):
         target_length = target_tensor.size(1) - 1
 
         for ei in range(input_length):
-            encoder_output, encoder_hidden = encoder(input_tensor[ei],
+            encoder_output, encoder_hidden = encoder(input_tensor[:,ei],
                                                      encoder_hidden)
         result = []
         decoder_input = encoder_output
