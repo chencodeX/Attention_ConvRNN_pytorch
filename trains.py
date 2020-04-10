@@ -154,6 +154,7 @@ def evaluate(input_tensor, target_tensor, encoder, decoder ):
                                                      encoder_hidden)
         result = []
         decoder_input = encoder_output
+        print (decoder_input.size())
         result.append(encoder_output)
         decoder_hidden = encoder_hidden
 
