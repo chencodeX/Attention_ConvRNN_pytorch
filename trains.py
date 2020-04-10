@@ -106,6 +106,7 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
                                          amsgrad=False)
 
     # decoder_optimizer = optim.SGD(decoder.parameters(), lr=learning_rate)
+    print("====train=====")
     decoder_optimizer = torch.optim.Adam(decoder.parameters(), lr=learning_rate, betas=(0.9, 0.999), eps=1e-08,
                                          weight_decay=0,
                                          amsgrad=False)
