@@ -143,6 +143,29 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
     # showPlot(plot_losses)
 
 
+def evaluate(input_tensor, target_tensor, encoder, decoder, ):
+    with torch.no_grad():
+        encoder_hidden = None
+        input_length = input_tensor.size(1)
+        target_length = target_tensor.size(1) - 1
+
+        for ei in range(input_length):
+            encoder_output, encoder_hidden = encoder(input_tensor[ei],
+                                                     encoder_hidden)
+        result = []
+        decoder_input = encoder_output
+        result.append(encoder_output)
+        decoder_hidden = encoder_hidden
+
+        for di in range(target_length - 1):
+            decoder_output, decoder_hidden = decoder(
+                decoder_input, decoder_hidden)
+            result.append(decoder_output)
+            decoder_input = decoder_output
+
+        return result
+
+
 def adjust_learning_rate(optimizer, lr, iter):
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
     lr_ = lr * (0.5 ** (iter // 600))
