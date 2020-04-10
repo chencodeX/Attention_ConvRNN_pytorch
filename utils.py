@@ -9,7 +9,7 @@ descirption:
 """
 import math
 import time
-
+import datetime
 
 def pixelshuffle_invert(x, factor_hw):
     """
@@ -41,3 +41,8 @@ def timeSince(since, percent):
     es = s / (percent)
     rs = es - s
     return '%s (- %s)' % (asMinutes(s), asMinutes(rs))
+
+
+def filelog(wstr = ''):
+    with open('./error.log','a') as f:
+        f.write('%s：%s\n' % (datetime.datetime.now(), wstr))
