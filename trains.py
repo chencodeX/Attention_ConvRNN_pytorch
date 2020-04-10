@@ -43,7 +43,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     # encoder_outputs = torch.zeros(max_length, encoder.hidden_size, device=device)
     encoder_hidden = None
     loss = 0
-    print("====encoder=====")
+    # print("====encoder=====")
     for ei in range(input_length - 1):
         encoder_output, encoder_hidden = encoder(
             input_tensor[:, ei], encoder_hidden)
@@ -106,7 +106,7 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
                                          amsgrad=False)
 
     # decoder_optimizer = optim.SGD(decoder.parameters(), lr=learning_rate)
-    print("====train=====")
+    # print("====train=====")
     decoder_optimizer = torch.optim.Adam(decoder.parameters(), lr=learning_rate, betas=(0.9, 0.999), eps=1e-08,
                                          weight_decay=0,
                                          amsgrad=False)
