@@ -155,6 +155,8 @@ if __name__ == '__main__':
     #
     mnist_moving_dataset -= 1
 
+    mnist_moving_dataset -= mnist_moving_dataset.mean()
+
     mnist_moving_dataset = mnist_moving_dataset.transpose([1, 0, 2, 3])
 
     mnist_moving_dataset = mnist_moving_dataset[:, :, np.newaxis, :, :]
