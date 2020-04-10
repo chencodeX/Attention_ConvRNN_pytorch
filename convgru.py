@@ -42,7 +42,7 @@ class ConvGRUCell(nn.Module):
             size_h = [input.data.size()[0], self.hidden_size] + list(input.data.size()[2:])
 
             hidden = torch.zeros(size_h, device=device)
-            nn.init.kaiming_uniform_(hidden, mode='fan_in', nonlinearity='relu')
+            # nn.init.kaiming_uniform_(hidden, mode='fan_in', nonlinearity='relu')
 
         # print (input.dtype)
         # print (hidden.dtype)
