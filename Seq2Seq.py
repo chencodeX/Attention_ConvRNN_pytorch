@@ -62,7 +62,7 @@ class EncoderRNN(nn.Module):
         self.bn1.weight.data.normal_(1.0, 0.02)
         self.bn1.bias.data.fill_(0)
         self.bn2.weight.data.normal_(1.0, 0.02)
-        self.bn3.bias.data.fill_(0)
+        self.bn2.bias.data.fill_(0)
         self.conv_pre.weight.data.normal_(0.0, 0.02)
         self.conv_pre1.weight.data.normal_(0.0, 0.02)
 
@@ -96,7 +96,7 @@ class DecoderRNN(nn.Module):
         self.bn1.weight.data.normal_(1.0, 0.02)
         self.bn1.bias.data.fill_(0)
         self.bn2.weight.data.normal_(1.0, 0.02)
-        self.bn3.bias.data.fill_(0)
+        self.bn2.bias.data.fill_(0)
         self.conv_pre.weight.data.normal_(0.0, 0.02)
         self.conv_pre1.weight.data.normal_(0.0, 0.02)
 
