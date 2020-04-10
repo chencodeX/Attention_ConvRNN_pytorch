@@ -29,6 +29,7 @@ class ConvGRUCell(nn.Module):
         self.Conv_ct = nn.Conv2d(self.input_size + self.hidden_size, self.hidden_size, self.kernel_size,
                                  padding=self.kernel_size // 2)
         dtype = torch.FloatTensor
+        self.init()
 
     def init(self):
         self.ConvGates.weight.data.normal_(0.0, 0.02)
