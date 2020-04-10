@@ -38,7 +38,7 @@ class EncoderRNN(nn.Module):
         self.hidden_size = hidden_size
         self.kernel_size = kernel_size
         self.input_size = input_size
-        self.relu = nn.Sigmoid()
+        self.relu = nn.ReLU()
         self.gru = ConvGRU(input_size, hidden_size, kernel_size, layers_num)
         self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=8, kernel_size=3, stride=1, padding=1,
                                   bias=True)
@@ -65,7 +65,7 @@ class DecoderRNN(nn.Module):
         self.hidden_size = hidden_size
         self.kernel_size = kernel_size
         self.output_size = output_size
-        self.relu = nn.Sigmoid()
+        self.relu = nn.ReLU()
         self.gru = ConvGRU(output_size, hidden_size, kernel_size, layers_num)
         self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=8, kernel_size=3, stride=1,
                                   padding=1, bias=True)
