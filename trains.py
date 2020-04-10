@@ -42,7 +42,8 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
 
     # encoder_outputs = torch.zeros(max_length, encoder.hidden_size, device=device)
     encoder_hidden = None
-    loss = 0
+    loss1 = 0
+    loss2 = 0
     # print("====encoder=====")
     for ei in range(input_length - 1):
         encoder_output, encoder_hidden = encoder(
@@ -50,7 +51,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
         # print (encoder_hidden[0].mean())
         # print (encoder_output.mean())
         # print (input_tensor[:, ei + 1].mean())
-        loss += criterion(encoder_output, input_tensor[:, ei + 1])
+        loss1 += criterion(encoder_output, input_tensor[:, ei + 1])
     encoder_output, encoder_hidden = encoder(input_tensor[:, 9], encoder_hidden)
     decoder_input = encoder_output
 
@@ -58,7 +59,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     # print (encoder_hidden[0].mean())
     # print (encoder_output.mean())
     # print (target_tensor[:, 0].mean())
-    loss += criterion(encoder_output, target_tensor[:, 0])
+    loss1 += criterion(encoder_output, target_tensor[:, 0])
 
     use_teacher_forcing = True if random.random() < teacher_forcing_ratio else False
     # print("====decoder=====")
@@ -67,7 +68,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
         for di in range(target_length):
             decoder_output, decoder_hidden = decoder(
                 decoder_input, decoder_hidden)
-            loss += criterion(decoder_output, target_tensor[:, di + 1])
+            loss2 += criterion(decoder_output, target_tensor[:, di + 1])
             decoder_input = target_tensor[:, di]  # Teacher forcing
             # print (decoder_hidden[-1].mean())
             # print (decoder_output.mean())
@@ -83,16 +84,16 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
             # print (decoder_hidden[0].mean())
             # print (decoder_output.mean())
             # print (target_tensor[:, di + 1].mean())
-            loss += criterion(decoder_output, target_tensor[:, di + 1])
+            loss2 += criterion(decoder_output, target_tensor[:, di + 1])
             # if decoder_input.item() == EOS_token:
             #     break
-
-    loss.backward()
+    loss1.backward()
+    loss2.backward()
 
     encoder_optimizer.step()
     decoder_optimizer.step()
 
-    return loss.item() / target_length
+    return (loss1+loss2).item() / target_length
 
 
 def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=100, learning_rate=0.01):
