@@ -87,13 +87,13 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
             loss2 += criterion(decoder_output, target_tensor[:, di + 1])
             # if decoder_input.item() == EOS_token:
             #     break
-    loss1.backward()
-    loss2.backward()
+    loss = loss1+loss2
+    loss.backward()
 
     encoder_optimizer.step()
     decoder_optimizer.step()
 
-    return (loss1+loss2).item() / target_length
+    return loss.item() / target_length
 
 
 def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=100, learning_rate=0.01):
