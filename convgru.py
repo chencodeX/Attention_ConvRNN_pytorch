@@ -30,6 +30,10 @@ class ConvGRUCell(nn.Module):
                                  padding=self.kernel_size // 2)
         dtype = torch.FloatTensor
 
+    def init(self):
+        self.ConvGates.weight.data.normal_(0.0, 0.02)
+        self.Conv_ct.weight.data.normal_(0.0, 0.02)
+
     def forward(self, input, hidden):
         if hidden is None:
             # print (input.data.size()[0])

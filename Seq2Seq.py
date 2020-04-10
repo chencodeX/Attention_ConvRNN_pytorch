@@ -47,6 +47,7 @@ class EncoderRNN(nn.Module):
         self.relu2 = nn.ReLU()
         self.conv_pre1 = nn.Conv2d(in_channels=8, out_channels=input_size, kernel_size=1, stride=1,
                                    padding=0, bias=True)
+        self.init()
 
     def forward(self, input, hidden=None):
         hiddens = self.gru(input, hidden)
@@ -57,8 +58,13 @@ class EncoderRNN(nn.Module):
         return output, hiddens
 
     # init in ConvGRUCell
-    # def initHidden(self):
-    #     return torch.zeros(1, 1, self.hidden_size, device=device)
+    def init(self):
+        self.bn1.weight.data.normal_(1.0, 0.02)
+        self.bn1.bias.data.fill_(0)
+        self.bn2.weight.data.normal_(1.0, 0.02)
+        self.bn3.bias.data.fill_(0)
+        self.conv_pre.weight.data.normal_(0.0, 0.02)
+        self.conv_pre1.weight.data.normal_(0.0, 0.02)
 
 
 class DecoderRNN(nn.Module):
@@ -77,6 +83,7 @@ class DecoderRNN(nn.Module):
         self.relu2 = nn.Sigmoid()
         self.conv_pre1 = nn.Conv2d(in_channels=8, out_channels=output_size, kernel_size=1, stride=1,
                                    padding=0, bias=True)
+        self.init()
 
     def forward(self, input, hidden):
         hiddens = self.gru(input, hidden)
@@ -85,8 +92,13 @@ class DecoderRNN(nn.Module):
         output = self.relu2(self.bn2(self.conv_pre1(output)))
         return output, hiddens
 
-    # def initHidden(self):
-    #     return torch.zeros(1, 1, self.hidden_size, device=device)
+    def init(self):
+        self.bn1.weight.data.normal_(1.0, 0.02)
+        self.bn1.bias.data.fill_(0)
+        self.bn2.weight.data.normal_(1.0, 0.02)
+        self.bn3.bias.data.fill_(0)
+        self.conv_pre.weight.data.normal_(0.0, 0.02)
+        self.conv_pre1.weight.data.normal_(0.0, 0.02)
 
 
 class AttnDecoderRNN(nn.Module):
