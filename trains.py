@@ -147,7 +147,7 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
 def evaluate(input_tensor, target_tensor, encoder, decoder ):
     with torch.no_grad():
         encoder_hidden = None
-        print (input_tensor.size())
+        print (input_tensor.mean())
         input_length = input_tensor.size(1)
         target_length = target_tensor.size(1) - 1
 
@@ -156,13 +156,14 @@ def evaluate(input_tensor, target_tensor, encoder, decoder ):
                                                      encoder_hidden)
         result = []
         decoder_input = encoder_output
-        print (decoder_input.size())
+        print (decoder_input.mean())
         result.append(encoder_output)
         decoder_hidden = encoder_hidden
 
         for di in range(target_length):
             decoder_output, decoder_hidden = decoder(
                 decoder_input, decoder_hidden)
+            print(decoder_output.mean())
             result.append(decoder_output)
             decoder_input = decoder_output
 
