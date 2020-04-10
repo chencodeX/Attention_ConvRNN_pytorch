@@ -43,7 +43,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     # encoder_outputs = torch.zeros(max_length, encoder.hidden_size, device=device)
     encoder_hidden = None
     loss = 0
-    # print("====encoder=====")
+    print("====encoder=====")
     for ei in range(input_length - 1):
         encoder_output, encoder_hidden = encoder(
             input_tensor[:, ei], encoder_hidden)
