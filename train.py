@@ -143,7 +143,7 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
     # showPlot(plot_losses)
 
 
-def evaluate(input_tensor, target_tensor, encoder, decoder, ):
+def evaluate(input_tensor, target_tensor, encoder, decoder ):
     with torch.no_grad():
         encoder_hidden = None
         input_length = input_tensor.size(1)
