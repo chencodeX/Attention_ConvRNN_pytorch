@@ -38,20 +38,20 @@ class EncoderRNN(nn.Module):
         self.hidden_size = hidden_size
         self.kernel_size = kernel_size
         self.input_size = input_size
-        self.relu = nn.ReLU()
+        self.relu1 = [nn.BatchNorm2d(8)] + [nn.ReLU()]
         self.gru = ConvGRU(input_size, hidden_size, kernel_size, layers_num)
         self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=8, kernel_size=3, stride=1, padding=1,
                                   bias=True)
-
+        self.relu2 = [nn.BatchNorm2d(1)] + [nn.ReLU()]
         self.conv_pre1 = nn.Conv2d(in_channels=8, out_channels=input_size, kernel_size=1, stride=1,
                                   padding=0, bias=True)
 
     def forward(self, input, hidden=None):
         hiddens = self.gru(input, hidden)
         output = self.conv_pre(hiddens[-1])
-        output = self.relu(output)
+        output = self.relu1(output)
         output = self.conv_pre1(output)
-        output = self.relu(output)
+        output = self.relu2(output)
         return output, hiddens
 
     # init in ConvGRUCell
@@ -65,11 +65,12 @@ class DecoderRNN(nn.Module):
         self.hidden_size = hidden_size
         self.kernel_size = kernel_size
         self.output_size = output_size
-        self.relu = nn.ReLU()
+        # self.relu = nn.ReLU()
+        self.relu1 = [nn.BatchNorm2d(8)] + [nn.ReLU()]
         self.gru = ConvGRU(output_size, hidden_size, kernel_size, layers_num)
         self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=8, kernel_size=3, stride=1,
                                   padding=1, bias=True)
-
+        self.relu2 = [nn.BatchNorm2d(1)] + [nn.ReLU()]
         self.conv_pre1 = nn.Conv2d(in_channels=8, out_channels=output_size, kernel_size=1, stride=1,
                                   padding=0, bias=True)
 
