@@ -154,7 +154,7 @@ def evaluate(input_tensor, target_tensor, encoder, decoder):
         target_length = target_tensor.size(1) - 1
         print ('===' * 5)
         for ei in range(input_length):
-            encoder_output, encoder_hidden = encoder(input_tensor[:, ei],
+            encoder_output, encoder_hidden = encoder.forward(input_tensor[:, ei],
                                                      encoder_hidden)
             print ('encoder_output mean: ', encoder_output.mean().cpu().data.numpy())
             print ('encoder_hidden[0] mean: ', encoder_hidden[0].mean().cpu().data.numpy())
@@ -169,7 +169,7 @@ def evaluate(input_tensor, target_tensor, encoder, decoder):
         print ('decoder_hidden[-1] mean', decoder_hidden[-1].mean().cpu().data.numpy())
 
         for di in range(target_length):
-            decoder_output, decoder_hidden = decoder(
+            decoder_output, decoder_hidden = decoder.forward(
                 decoder_input, decoder_hidden)
 
             print('decoder_output mean: ',decoder_output.mean().cpu().data.numpy())
