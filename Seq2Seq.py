@@ -52,17 +52,17 @@ class EncoderRNN(nn.Module):
     def forward(self, input, hidden=None):
         hiddens = self.gru(input, hidden)
         output = self.conv_pre(hiddens[-1])
-        # print ('conv_pre mean', output.mean().cpu().data.numpy())
+        print ('conv_pre mean', output.mean().cpu().data.numpy())
         output = self.bn1(output)
-        # print ('bn1 mean', output.mean().cpu().data.numpy())
+        print ('bn1 mean', output.mean().cpu().data.numpy())
         output = self.relu1(output)
-        # print ('relu1 mean', output.mean().cpu().data.numpy())
+        print ('relu1 mean', output.mean().cpu().data.numpy())
         output = self.conv_pre1(output)
-        # print ('conv_pre1 mean', output.mean().cpu().data.numpy())
+        print ('conv_pre1 mean', output.mean().cpu().data.numpy())
         output = self.bn2(output)
-        # print ('bn2 mean', output.mean().cpu().data.numpy())
+        print ('bn2 mean', output.mean().cpu().data.numpy())
         output = self.relu2(output)
-        # print ('relu2 mean', output.mean().cpu().data.numpy())
+        print ('relu2 mean', output.mean().cpu().data.numpy())
         return output, hiddens
 
     # init in ConvGRUCell
@@ -95,9 +95,18 @@ class DecoderRNN(nn.Module):
 
     def forward(self, input, hidden):
         hiddens = self.gru(input, hidden)
-        output = self.relu1(self.bn1(self.conv_pre(hiddens[-1])))
-
-        output = self.relu2(self.bn2(self.conv_pre1(output)))
+        output = self.conv_pre(hiddens[-1])
+        print ('conv_pre mean', output.mean().cpu().data.numpy())
+        output = self.bn1(output)
+        print ('bn1 mean', output.mean().cpu().data.numpy())
+        output = self.relu1(output)
+        print ('relu1 mean', output.mean().cpu().data.numpy())
+        self.conv_pre1(output)
+        print ('conv_pre1 mean', output.mean().cpu().data.numpy())
+        self.bn2(output)
+        print ('bn2 mean', output.mean().cpu().data.numpy())
+        output = self.relu2(output)
+        print ('relu2 mean', output.mean().cpu().data.numpy())
         return output, hiddens
 
     def init(self):
