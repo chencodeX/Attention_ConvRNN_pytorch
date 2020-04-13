@@ -44,7 +44,7 @@ class EncoderRNN(nn.Module):
         self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=8, kernel_size=3, stride=1, padding=1,
                                   bias=True)
         self.bn2 = nn.BatchNorm2d(1)
-        self.relu2 = nn.Sigmoid()
+        self.relu2 = nn.LeakyReLU()
         self.conv_pre1 = nn.Conv2d(in_channels=8, out_channels=input_size, kernel_size=1, stride=1,
                                    padding=0, bias=True)
         self.init()
@@ -88,7 +88,7 @@ class DecoderRNN(nn.Module):
         self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=8, kernel_size=3, stride=1,
                                   padding=1, bias=True)
         self.bn2 = nn.BatchNorm2d(1)
-        self.relu2 = nn.Sigmoid()
+        self.relu2 = nn.LeakyReLU()
         self.conv_pre1 = nn.Conv2d(in_channels=8, out_channels=output_size, kernel_size=1, stride=1,
                                    padding=0, bias=True)
         self.init()
