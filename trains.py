@@ -157,6 +157,7 @@ def evaluate(input_tensor, target_tensor, encoder, decoder ):
             encoder_output, encoder_hidden = encoder(input_tensor[:,ei],
                                                      encoder_hidden)
             print (encoder_output.mean())
+            print (encoder_hidden.mean())
         result = []
         decoder_input = encoder_output
         print (decoder_input.mean())
