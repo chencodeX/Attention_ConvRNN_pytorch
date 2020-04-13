@@ -87,7 +87,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
             loss2 += criterion(decoder_output, target_tensor[:, di + 1])
             # if decoder_input.item() == EOS_token:
             #     break
-    loss = loss1+loss2
+    loss = loss1 + loss2
     loss.backward()
 
     encoder_optimizer.step()
@@ -146,29 +146,35 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
     # showPlot(plot_losses)
 
 
-def evaluate(input_tensor, target_tensor, encoder, decoder ):
+def evaluate(input_tensor, target_tensor, encoder, decoder):
     with torch.no_grad():
         encoder_hidden = None
         print (input_tensor.mean())
         input_length = input_tensor.size(1)
         target_length = target_tensor.size(1) - 1
-
+        print ('===' * 5)
         for ei in range(input_length):
-            encoder_output, encoder_hidden = encoder(input_tensor[:,ei],
+            encoder_output, encoder_hidden = encoder(input_tensor[:, ei],
                                                      encoder_hidden)
-            print (encoder_output.mean())
-            print (encoder_hidden[0].mean())
-            print (encoder_hidden[-1].mean())
+            print ('encoder_output mean: ', encoder_output.mean())
+            print ('encoder_hidden[0] mean: ', encoder_hidden[0].mean())
+            print ('encoder_hidden[-1] mean: ', encoder_hidden[-1].mean())
         result = []
+        print ('==='*5)
         decoder_input = encoder_output
-        print (decoder_input.mean())
+        print ('decoder_input mean: ', decoder_input.mean())
         result.append(encoder_output)
         decoder_hidden = encoder_hidden
+        print ('decoder_hidden[0] mean', decoder_hidden[0].mean())
+        print ('decoder_hidden[-1] mean', decoder_hidden[-1].mean())
 
         for di in range(target_length):
             decoder_output, decoder_hidden = decoder(
                 decoder_input, decoder_hidden)
-            print(decoder_output.mean())
+
+            print('decoder_output mean: ',decoder_output.mean())
+            print ('decoder_hidden[0] mean', decoder_hidden[0].mean())
+            print ('decoder_hidden[-1] mean', decoder_hidden[-1].mean())
             result.append(decoder_output)
             decoder_input = decoder_output
 
