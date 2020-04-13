@@ -156,25 +156,25 @@ def evaluate(input_tensor, target_tensor, encoder, decoder):
         for ei in range(input_length):
             encoder_output, encoder_hidden = encoder(input_tensor[:, ei],
                                                      encoder_hidden)
-            print ('encoder_output mean: ', encoder_output.mean().cpu().data.numpy()[0])
-            print ('encoder_hidden[0] mean: ', encoder_hidden[0].mean().cpu().data.numpy()[0])
-            print ('encoder_hidden[-1] mean: ', encoder_hidden[-1].mean().cpu().data.numpy()[0])
+            print ('encoder_output mean: ', encoder_output.mean().cpu().data.numpy())
+            print ('encoder_hidden[0] mean: ', encoder_hidden[0].mean().cpu().data.numpy())
+            print ('encoder_hidden[-1] mean: ', encoder_hidden[-1].mean().cpu().data.numpy())
         result = []
         print ('==='*5)
         decoder_input = encoder_output
-        print ('decoder_input mean: ', decoder_input.mean().cpu().data.numpy()[0])
+        print ('decoder_input mean: ', decoder_input.mean().cpu().data.numpy())
         result.append(encoder_output)
         decoder_hidden = encoder_hidden
-        print ('decoder_hidden[0] mean', decoder_hidden[0].mean().cpu().data.numpy()[0])
-        print ('decoder_hidden[-1] mean', decoder_hidden[-1].mean().cpu().data.numpy()[0])
+        print ('decoder_hidden[0] mean', decoder_hidden[0].mean().cpu().data.numpy())
+        print ('decoder_hidden[-1] mean', decoder_hidden[-1].mean().cpu().data.numpy())
 
         for di in range(target_length):
             decoder_output, decoder_hidden = decoder(
                 decoder_input, decoder_hidden)
 
-            print('decoder_output mean: ',decoder_output.mean().cpu().data.numpy()[0])
-            print ('decoder_hidden[0] mean', decoder_hidden[0].mean().cpu().data.numpy()[0])
-            print ('decoder_hidden[-1] mean', decoder_hidden[-1].mean().cpu().data.numpy()[0])
+            print('decoder_output mean: ',decoder_output.mean().cpu().data.numpy())
+            print ('decoder_hidden[0] mean', decoder_hidden[0].mean().cpu().data.numpy())
+            print ('decoder_hidden[-1] mean', decoder_hidden[-1].mean().cpu().data.numpy())
             result.append(decoder_output)
             decoder_input = decoder_output
 
