@@ -35,7 +35,7 @@ def weights_init(m):
 
 def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion):
     encoder_optimizer.zero_grad()
-    # decoder_optimizer.zero_grad()
+    decoder_optimizer.zero_grad()
 
     input_length = input_tensor.size(1)
     target_length = target_tensor.size(1) - 1
@@ -58,10 +58,10 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     # print (encoder_output.mean())
     # print (target_tensor[:, 0].mean())
     loss1 += criterion(encoder_output, target_tensor[:, 0])
-    loss1.backward()
+    # loss1.backward()
 
-    encoder_optimizer.step()
-    decoder_optimizer.zero_grad()
+    # encoder_optimizer.step()
+    # decoder_optimizer.zero_grad()
     decoder_input = encoder_output
 
     decoder_hidden = encoder_hidden
@@ -91,20 +91,22 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
             loss2 += criterion(decoder_output, target_tensor[:, di + 1])
             # if decoder_input.item() == EOS_token:
             #     break
-    # loss = loss1 + loss2
-    # loss.backward()
-    loss2.backward()
-    # encoder_optimizer.step()
-    decoder_optimizer.step()
     loss = loss1 + loss2
-    return loss.item() / target_length
+    loss.backward()
+    # loss2.backward()
+    encoder_optimizer.step()
+    decoder_optimizer.step()
+    # loss = loss1 + loss2
+    return loss1.item() / input_length,loss2.item() / (target_length-1)
 
 
 def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=100, learning_rate=0.003):
     start = time.time()
     plot_losses = []
-    print_loss_total = 0  # Reset every print_every
-    plot_loss_total = 0  # Reset every plot_every
+    print_loss_total1 = 0  # Reset every print_every
+    print_loss_total2 = 0  # Reset every print_every
+
+    plot_loss_total1 = 0  # Reset every plot_every
     n_iters = n_epoch * len(pairs) // batch_size
     # encoder_optimizer = optim.SGD(encoder.parameters(), lr=learning_rate)
     encoder_optimizer = torch.optim.Adam(encoder.parameters(), lr=learning_rate, betas=(0.9, 0.999), eps=1e-08,
@@ -129,23 +131,25 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
         input_tensor = training_pair[:, :10]
         target_tensor = training_pair[:, 10:]
 
-        loss = train(input_tensor, target_tensor, encoder,
+        loss1,loss2 = train(input_tensor, target_tensor, encoder,
                      decoder, encoder_optimizer, decoder_optimizer, criterion)
-        print_loss_total += loss
-        plot_loss_total += loss
+        print_loss_total1 += loss1
+        print_loss_total2 += loss2
+        plot_loss_total1 += loss1
 
         if iter % print_every == 0:
             adjust_learning_rate(encoder_optimizer, learning_rate, iter)
             adjust_learning_rate(decoder_optimizer, learning_rate, iter)
-            print_loss_avg = print_loss_total / print_every
+            print_loss_avg1 = print_loss_total1 / print_every
+            print_loss_avg2 = print_loss_total2 / print_every
             print_loss_total = 0
-            print('%s (%d %d%%) %.4f' % (timeSince(start, iter / n_iters),
-                                         iter, iter / n_iters * 100, print_loss_avg))
+            print('%s (%d %d%%) %.4f - %.4f' % (timeSince(start, iter / n_iters),
+                                         iter, iter / n_iters * 100, print_loss_avg1,print_loss_avg2))
 
         if iter % plot_every == 0:
-            plot_loss_avg = plot_loss_total / plot_every
+            plot_loss_avg = plot_loss_total1 / plot_every
             plot_losses.append(plot_loss_avg)
-            plot_loss_total = 0
+            plot_loss_total1 = 0
 
     # showPlot(plot_losses)
 
