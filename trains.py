@@ -20,7 +20,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 teacher_forcing_ratio = 0.5
 
-batch_size = 32
+batch_size = 16
 
 
 def weights_init(m):
