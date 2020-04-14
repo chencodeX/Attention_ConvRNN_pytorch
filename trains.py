@@ -20,7 +20,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 teacher_forcing_ratio = 0.5
 
-batch_size = 16
+batch_size = 8
 
 
 def weights_init(m):
@@ -100,7 +100,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     return loss1.item() / input_length,loss2.item() / (target_length-1)
 
 
-def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=100, learning_rate=0.003):
+def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=100, learning_rate=0.001):
     start = time.time()
     plot_losses = []
     print_loss_total1 = 0  # Reset every print_every
@@ -191,7 +191,7 @@ def evaluate(input_tensor, target_tensor, encoder, decoder):
 
 def adjust_learning_rate(optimizer, lr, iter):
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
-    lr_ = lr * (0.5 ** (iter // 600))
+    lr_ = lr * (0.5 ** (iter // 2400))
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr_
 
