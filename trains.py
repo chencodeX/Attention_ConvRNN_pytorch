@@ -53,16 +53,18 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
         # print (input_tensor[:, ei + 1].mean())
         loss1 += criterion(encoder_output, input_tensor[:, ei + 1])
     encoder_output, encoder_hidden = encoder(input_tensor[:, 9], encoder_hidden)
-    decoder_input = encoder_output
 
-    decoder_hidden = encoder_hidden
     # print (encoder_hidden[0].mean())
     # print (encoder_output.mean())
     # print (target_tensor[:, 0].mean())
     loss1 += criterion(encoder_output, target_tensor[:, 0])
     loss1.backward()
+
     encoder_optimizer.step()
     decoder_optimizer.zero_grad()
+    decoder_input = encoder_output
+
+    decoder_hidden = encoder_hidden
     use_teacher_forcing = True if random.random() < teacher_forcing_ratio else False
     # print("====decoder=====")
     if use_teacher_forcing:
