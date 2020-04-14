@@ -60,7 +60,9 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     # print (encoder_output.mean())
     # print (target_tensor[:, 0].mean())
     loss1 += criterion(encoder_output, target_tensor[:, 0])
-
+    loss1.backward()
+    encoder_optimizer.step()
+    decoder_optimizer.zero_grad()
     use_teacher_forcing = True if random.random() < teacher_forcing_ratio else False
     # print("====decoder=====")
     if use_teacher_forcing:
@@ -87,12 +89,12 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
             loss2 += criterion(decoder_output, target_tensor[:, di + 1])
             # if decoder_input.item() == EOS_token:
             #     break
-    loss = loss1 + loss2
-    loss.backward()
-
-    encoder_optimizer.step()
+    # loss = loss1 + loss2
+    # loss.backward()
+    loss2.backward()
+    # encoder_optimizer.step()
     decoder_optimizer.step()
-
+    loss = loss1 + loss2
     return loss.item() / target_length
 
 
