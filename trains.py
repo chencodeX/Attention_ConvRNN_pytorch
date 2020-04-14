@@ -35,7 +35,7 @@ def weights_init(m):
 
 def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion):
     encoder_optimizer.zero_grad()
-    decoder_optimizer.zero_grad()
+    # decoder_optimizer.zero_grad()
 
     input_length = input_tensor.size(1)
     target_length = target_tensor.size(1) - 1
