@@ -100,7 +100,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     return loss1.item() / input_length,loss2.item() / (target_length-1)
 
 
-def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=100, learning_rate=0.001):
+def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=100, learning_rate=0.01):
     start = time.time()
     plot_losses = []
     print_loss_total1 = 0  # Reset every print_every
