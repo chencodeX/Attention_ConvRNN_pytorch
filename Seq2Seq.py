@@ -88,7 +88,7 @@ class DecoderRNN(nn.Module):
         self.conv_pre = nn.Conv2d(in_channels=hidden_size[-1], out_channels=8, kernel_size=3, stride=1,
                                   padding=1, bias=True)
         self.bn2 = nn.BatchNorm2d(1)
-        self.relu2 = nn.LeakyReLU()
+        self.relu2 = nn.Sigmoid()
         self.conv_pre1 = nn.Conv2d(in_channels=8, out_channels=output_size, kernel_size=1, stride=1,
                                    padding=0, bias=True)
         self.init()
@@ -97,15 +97,15 @@ class DecoderRNN(nn.Module):
         hiddens = self.gru(input, hidden)
         output = self.conv_pre(hiddens[-1])
         # print ('conv_pre mean', output.mean().cpu().data.numpy())
-        # output = self.bn1(output)
+        output = self.bn1(output)
         # print ('bn1 mean', output.mean().cpu().data.numpy())
         output = self.relu1(output)
         # print ('relu1 mean', output.mean().cpu().data.numpy())
         output = self.conv_pre1(output)
         # print ('conv_pre1 mean', output.mean().cpu().data.numpy())
-        output = self.bn2(output)
+        # output = self.bn2(output)
         # print ('bn2 mean', output.mean().cpu().data.numpy())
-        output = self.relu2(output)
+        # output = self.relu2(output)
         # print ('relu2 mean', output.mean().cpu().data.numpy())
         return output, hiddens
 
