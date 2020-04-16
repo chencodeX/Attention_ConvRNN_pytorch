@@ -133,7 +133,7 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
 
     for iter in range(1, n_iters + 1):
         training_pair = [random.choice(pairs) for i in range(batch_size)]
-        training_pair = data_trans(np.array(training_pair)).to(device)
+        training_pair = torch.tensor(np.array(training_pair)).to(device)
         input_tensor = training_pair[:, :10]
         target_tensor = training_pair[:, 10:]
 
