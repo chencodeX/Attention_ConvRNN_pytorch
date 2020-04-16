@@ -59,9 +59,9 @@ class EncoderRNN(nn.Module):
         # print ('relu1 mean', output.mean().cpu().data.numpy())
         output = self.conv_pre1(output)
         # print ('conv_pre1 mean', output.mean().cpu().data.numpy())
-        output = self.bn2(output)
+        # output = self.bn2(output)
         # print ('bn2 mean', output.mean().cpu().data.numpy())
-        output = self.relu2(output)
+        # output = self.relu2(output)
         # print ('relu2 mean', output.mean().cpu().data.numpy())
         return output, hiddens
 
