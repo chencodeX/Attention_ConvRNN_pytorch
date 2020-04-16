@@ -26,14 +26,20 @@ class ConvGRUCell(nn.Module):
         self.dropout = nn.Dropout(p=0.5)
         self.ConvGates = nn.Conv2d(self.input_size + self.hidden_size, 2 * self.hidden_size, self.kernel_size,
                                    padding=self.kernel_size // 2)
+        self.bn1 = nn.BatchNorm2d(2 * self.hidden_size)
         self.Conv_ct = nn.Conv2d(self.input_size + self.hidden_size, self.hidden_size, self.kernel_size,
                                  padding=self.kernel_size // 2)
+        self.bn2 = nn.BatchNorm2d(self.hidden_size)
         dtype = torch.FloatTensor
         self.init()
 
     def init(self):
         self.ConvGates.weight.data.normal_(0.0, 0.02)
         self.Conv_ct.weight.data.normal_(0.0, 0.02)
+        self.bn1.weight.data.normal_(1.0, 0.02)
+        self.bn1.bias.data.fill_(0)
+        self.bn2.weight.data.normal_(1.0, 0.02)
+        self.bn2.bias.data.fill_(0)
 
     def forward(self, input, hidden):
         if hidden is None:
@@ -51,7 +57,7 @@ class ConvGRUCell(nn.Module):
         # print (hidden.size(), hidden.dtype)
         # print ('=' * 20)
         c1 = self.ConvGates(torch.cat((input, hidden), 1))
-
+        c1 = self.bn1(c1)
         ru = self.dropout(torch.sigmoid(c1))
 
         (reset_gate, update_gate) = ru.chunk(2, 1)
@@ -61,7 +67,7 @@ class ConvGRUCell(nn.Module):
         gated_hidden = reset_gate * hidden
         ct = torch.tanh(self.Conv_ct(torch.cat((input, gated_hidden), 1)))
         # ct = f.tanh()
-
+        ct = self.bn2(ct)
         next_h = update_gate * ct + (1 - update_gate) * hidden  # 展开算式
         #
         # next_h = update_gate * ct + hidden - update_gate * hidden
