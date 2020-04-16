@@ -10,6 +10,7 @@ descirption:
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torchvision.transforms as transforms
 import random
 import numpy as np
 import time
@@ -21,7 +22,12 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 teacher_forcing_ratio = 0.5
 
 batch_size = 8
-
+normalize = transforms.Normalize(mean=[0.0493],
+                                 std=[0.1985])
+data_trans = transforms.Compose([
+            transforms.ToTensor(),
+            normalize,
+        ])
 
 def weights_init(m):
     classname = m.__class__.__name__
@@ -127,7 +133,7 @@ def trainIters(encoder, decoder, n_epoch, pairs, print_every=1000, plot_every=10
 
     for iter in range(1, n_iters + 1):
         training_pair = [random.choice(pairs) for i in range(batch_size)]
-        training_pair = torch.tensor(training_pair).to(device)
+        training_pair = data_trans(training_pair).to(device)
         input_tensor = training_pair[:, :10]
         target_tensor = training_pair[:, 10:]
 
