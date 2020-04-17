@@ -56,19 +56,19 @@ class EncoderRNN(nn.Module):
         # self.init()
 
     def forward(self, input, hidden=None):
-        if self.print_log : print ('=======encode forward =========')
+        if self.print_log : print ('=======encode forward =========');
         input = self.conv_pre_0(input)
-        if self.print_log: print (input.size())
+        if self.print_log: print (input.size());
         hidden[0] = self.gruc_0(input, hidden[0])
-        if self.print_log: print (hidden[0].size())
+        if self.print_log: print (hidden[0].size());
         input = self.conv_pre_1(hidden[0])
-        if self.print_log: print (input.size())
+        if self.print_log: print (input.size());
         hidden[1] = self.gruc_1(input, hidden[1])
-        if self.print_log: print (hidden[1].size())
+        if self.print_log: print (hidden[1].size());
         input = self.conv_pre_2(hidden[1])
-        if self.print_log: print (input.size())
+        if self.print_log: print (input.size());
         hidden[2] = self.gruc_2(input, hidden[2])
-        if self.print_log: print (hidden[2].size())
+        if self.print_log: print (hidden[2].size());
         return hidden
 
 
@@ -94,17 +94,17 @@ class DecoderRNN(nn.Module):
         # self.init()
 
     def forward(self, input, hidden):
-        if self.print_log: print ('=======decoder forward =========')
+        if self.print_log: print ('=======decoder forward =========');
         hidden[2] = self.gruc_0(None, hidden[2])
-        if self.print_log: print (hidden[2].size())
+        if self.print_log: print (hidden[2].size());
         input = self.conv_pre_0(hidden[2])
-        if self.print_log: print (input.size())
+        if self.print_log: print (input.size());
         hidden[1] = self.gruc_1(input, hidden[1])
-        if self.print_log: print (hidden[1].size())
+        if self.print_log: print (hidden[1].size());
         input = self.conv_pre_1(hidden[1])
-        if self.print_log: print (input.size())
+        if self.print_log: print (input.size());
         hidden[0] = self.gruc_2(input, hidden[0])
-        if self.print_log: print (hidden[0].size())
+        if self.print_log: print (hidden[0].size());
         input = self.conv_pre_2_0(hidden[0])
         input = self.conv_pre_2_1(input)
 
