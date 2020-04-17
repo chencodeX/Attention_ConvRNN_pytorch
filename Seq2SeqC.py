@@ -93,7 +93,7 @@ class DecoderRNN(nn.Module):
 
     def forward(self, input, hidden):
         print ('=======decoder forward =========')
-        hidden[2] = self.gruc_0(input, hidden[2])
+        hidden[2] = self.gruc_0(None, hidden[2])
         print (hidden[2].size())
         input = self.conv_pre_0(hidden[2])
         print (input.size())
