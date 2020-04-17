@@ -80,10 +80,10 @@ class DecoderRNN(nn.Module):
         self.bn1 = nn.BatchNorm2d(8)
         # self.relu1 = nn.Sigmoid()
         self.gruc_0 = ConvGRUCell(input_size, hidden_size[0], kernel_size[0])
-        self.conv_pre_0 = deconv2_act(hidden_size[0], out_channels=hidden_size[0], kernel_size=3, stride=2, padding=1)
+        self.conv_pre_0 = deconv2_act(hidden_size[0], out_channels=hidden_size[0], kernel_size=4, stride=2, padding=1)
 
         self.gruc_1 = ConvGRUCell(hidden_size[0], hidden_size[1], kernel_size[1])
-        self.conv_pre_1 = deconv2_act(hidden_size[1], out_channels=hidden_size[1], kernel_size=3, stride=2, padding=1)
+        self.conv_pre_1 = deconv2_act(hidden_size[1], out_channels=hidden_size[1], kernel_size=4, stride=2, padding=1)
 
         self.gruc_2 = ConvGRUCell(hidden_size[1], hidden_size[2], kernel_size[2])
         self.conv_pre_2_0 = conv2_act(hidden_size[2], out_channels=16, kernel_size=3, stride=1, padding=1)
