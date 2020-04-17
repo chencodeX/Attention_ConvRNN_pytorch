@@ -41,6 +41,7 @@ class EncoderRNN(nn.Module):
         self.input_size = input_size
         self.bn1 = nn.BatchNorm2d(8)
         # self.relu1 = nn.Sigmoid()
+        self.print_log = False
         self.conv_pre_0 = conv2_act(input_size, out_channels=16, kernel_size=3, stride=1, padding=1)
 
         self.gruc_0 = ConvGRUCell(16, hidden_size[0], kernel_size[0])
@@ -55,19 +56,19 @@ class EncoderRNN(nn.Module):
         # self.init()
 
     def forward(self, input, hidden=None):
-        print ('=======encode forward =========')
+        if self.print_log : print ('=======encode forward =========')
         input = self.conv_pre_0(input)
-        print (input.size())
+        if self.print_log: print (input.size())
         hidden[0] = self.gruc_0(input, hidden[0])
-        print (hidden[0].size())
+        if self.print_log: print (hidden[0].size())
         input = self.conv_pre_1(hidden[0])
-        print (input.size())
+        if self.print_log: print (input.size())
         hidden[1] = self.gruc_1(input, hidden[1])
-        print (hidden[1].size())
+        if self.print_log: print (hidden[1].size())
         input = self.conv_pre_2(hidden[1])
-        print (input.size())
+        if self.print_log: print (input.size())
         hidden[2] = self.gruc_2(input, hidden[2])
-        print (hidden[2].size())
+        if self.print_log: print (hidden[2].size())
         return hidden
 
 
@@ -78,6 +79,7 @@ class DecoderRNN(nn.Module):
         self.kernel_size = kernel_size
         self.input_size = input_size
         self.bn1 = nn.BatchNorm2d(8)
+        self.print_log = False
         # self.relu1 = nn.Sigmoid()
         self.gruc_0 = ConvGRUCell(input_size, hidden_size[0], kernel_size[0])
         self.conv_pre_0 = deconv2_act(hidden_size[0], out_channels=hidden_size[0], kernel_size=4, stride=2, padding=1)
@@ -92,17 +94,17 @@ class DecoderRNN(nn.Module):
         # self.init()
 
     def forward(self, input, hidden):
-        print ('=======decoder forward =========')
+        if self.print_log: print ('=======decoder forward =========')
         hidden[2] = self.gruc_0(None, hidden[2])
-        print (hidden[2].size())
+        if self.print_log: print (hidden[2].size())
         input = self.conv_pre_0(hidden[2])
-        print (input.size())
+        if self.print_log: print (input.size())
         hidden[1] = self.gruc_1(input, hidden[1])
-        print (hidden[1].size())
+        if self.print_log: print (hidden[1].size())
         input = self.conv_pre_1(hidden[1])
-        print (input.size())
+        if self.print_log: print (input.size())
         hidden[0] = self.gruc_2(input, hidden[0])
-        print (hidden[0].size())
+        if self.print_log: print (hidden[0].size())
         input = self.conv_pre_2_0(hidden[0])
         input = self.conv_pre_2_1(input)
 
