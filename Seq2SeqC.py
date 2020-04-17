@@ -52,7 +52,7 @@ class EncoderRNN(nn.Module):
 
         self.gruc_2 = ConvGRUCell(hidden_size[1], hidden_size[2], kernel_size[2])
 
-        self.init()
+        # self.init()
 
     def forward(self, input, hidden=None):
         input = self.conv_pre_0(input)
@@ -83,7 +83,7 @@ class DecoderRNN(nn.Module):
         self.conv_pre_2_0 = conv2_act(hidden_size[2], out_channels=16, kernel_size=3, stride=1, padding=1)
         self.conv_pre_2_1 = conv2_act(16, out_channels=1, kernel_size=3, stride=1)
 
-        self.init()
+        # self.init()
 
     def forward(self, input, hidden):
         hidden[2] = self.gruc_0(input, hidden[2])
