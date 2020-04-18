@@ -26,12 +26,15 @@ class ConvGRUCell(nn.Module):
         self.dropout = nn.Dropout(p=0.5)
         self.ConvGates = nn.Conv2d(self.input_size + self.hidden_size, 2 * self.hidden_size, self.kernel_size,
                                    padding=self.kernel_size // 2)
-        self.bn1 = nn.BatchNorm2d(2 * self.hidden_size)
+        # self.bn1 = nn.BatchNorm2d(2 * self.hidden_size)
+        self.bn1 = nn.GroupNorm(2 * self.hidden_size // 32, 2 * self.hidden_size)
         self.Conv_ct = nn.Conv2d(self.input_size + self.hidden_size, self.hidden_size, self.kernel_size,
                                  padding=self.kernel_size // 2)
-        self.bn2 = nn.BatchNorm2d(self.hidden_size)
+        # self.bn2 = nn.BatchNorm2d(self.hidden_size)
+        self.bn2 = nn.GroupNorm(self.hidden_size // 32, self.hidden_size)
+
         dtype = torch.FloatTensor
-        self.init()
+        # self.init()
 
     def init(self):
         self.ConvGates.weight.data.normal_(0.0, 0.02)
