@@ -19,7 +19,7 @@ def deconv2_act(inplanes, out_channels=8, kernel_size=7, stride=5, padding=1, bi
     layers += [
         nn.ConvTranspose2d(inplanes, out_channels=out_channels, kernel_size=kernel_size, stride=stride, padding=padding,
                            bias=bias)]
-    layers += [nn.BatchNorm2d(out_channels)]
+    # layers += [nn.BatchNorm2d(out_channels)]
     layers += [nn.LeakyReLU(negative_slope=0.2)]
     return nn.Sequential(*layers)
 
@@ -28,7 +28,7 @@ def conv2_act(inplanes, out_channels=8, kernel_size=7, stride=5, padding=1, bias
     layers = []
     layers += [nn.Conv2d(inplanes, out_channels=out_channels, kernel_size=kernel_size, stride=stride, padding=padding,
                          bias=bias)]
-    layers += [nn.BatchNorm2d(out_channels)]
+    # layers += [nn.BatchNorm2d(out_channels)]
     layers += [nn.LeakyReLU(negative_slope=0.2, inplace=True)]
     return nn.Sequential(*layers)
 
